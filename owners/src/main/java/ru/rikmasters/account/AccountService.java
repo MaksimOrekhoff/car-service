@@ -1,5 +1,7 @@
 package ru.rikmasters.account;
 
+import ru.rikmasters.account.dto.AccountDto;
+
 public interface AccountService {
     AccountDto getAccount(Long ownerId, String text);
 

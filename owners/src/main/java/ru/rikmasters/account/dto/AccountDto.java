@@ -1,4 +1,4 @@
-package ru.rikmasters.account;
+package ru.rikmasters.account.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
