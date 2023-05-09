@@ -1,0 +1,777 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Rik Masters API",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:9090",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "OwnerController",
+      "description": "API для работы с автовладельцами"
+    },
+        {
+      "name": "AccountController",
+      "description": "API для работы со счетами автовладельцев"
+    }
+  ],
+  "paths": {
+    "/accounts/{ownerId}" : {
+      "get" : {
+        "tags": [
+          "AccountController"
+          ],
+        "summary": "Запрос состояния счета",
+                "description": "Автовладелец запрашивает баланс в неоходимой валюте.",
+                "parameters": [
+                    {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "в какой валюте запрашивает владелец",
+            "in": "query",
+            "name": "text",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Статистика собрана",
+            "content": {
+              "application/json": {
+                              "schema": {
+                "$ref": "#/components/schemas/AccountDTO"
+              }
+              }
+            }
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      },
+      "post" : {
+                "tags": [
+          "AccountController"
+        ],
+        "summary": "Создание счета автовладельца",
+                "description": "Сохранение информации о новом автовладельце по переданному id автовладельца.",
+                "parameters": [
+                    {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Статистика собрана",
+            "content": {
+              "application/json": {
+                              "schema": {
+                "$ref": "#/components/schemas/AccountDTO"
+              }
+              }
+            }
+          },
+          "400": {
+            "description": "Невалидные данные"
+          }
+        }
+      }
+    },
+    "/account/replenishmentAccount/{ownerId}" : {
+      "patch" : {
+        "tags": [
+          "AccountController"
+        ],
+        "summary": "Пополнение счета",
+                "description": "Автовладелец пополняет баланс в неоходимой валюте.",
+                "parameters": [
+                    {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "в какой валюте пополняет владелец",
+            "in": "query",
+            "name": "text",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "в какой валюте пополняет владелец",
+            "in": "query",
+            "name": "sum",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Счет пополнен",
+            "content": {
+              "application/json": {
+                              "schema": {
+                "$ref": "#/components/schemas/AccountDTO"
+              }
+              }
+            }
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    },
+"/account/withdrawalFacilities/{ownerId}" : {
+      "patch" : {
+        "tags": [
+          "AccountController"
+        ],
+        "summary": "Списание со счета",
+                "description": "Автовладелец расходует баланс в неоходимой валюте.",
+                "parameters": [
+                    {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "в какой валюте снимает владелец",
+            "in": "query",
+            "name": "text",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "в какой валюте пополняет владелец",
+            "in": "query",
+            "name": "sum",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Счет пополнен",
+            "content": {
+              "application/json": {
+                              "schema": {
+                "$ref": "#/components/schemas/AccountDTO"
+              }
+              }
+            }
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    },
+    "/accounts/{accountId}/{ownerId}": {
+      "delete" : {
+        "tags": [
+          "AccountController"
+        ],
+          "summary": "Удаление счета",
+          "description": "Автовладелец удаляет свой счет.",
+          "parameters": [
+                    {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "id аккаунта",
+            "in": "path",
+            "name": "accountId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+                        "responses": {
+          "200": {
+            "description": "Счет упешно удален."
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    },
+
+    "/owners": {
+      "post": {
+        "tags": [
+          "OwnerController"
+        ],
+        "summary": "Добавление нового автовладельца",
+        "description": "Сохранение информации о новом автовладельце. Данные автовладельцами указаны в теле запроса.",
+        "requestBody": {
+          "description": "Данные запроса",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OwnerCreateDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+                        "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnerCreateDTO"
+                }
+              }
+            },
+            "description": "Информация сохранена"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          }
+        }
+      },
+      "get" : {
+                "tags": [
+                  "OwnerController"
+                ],
+        "summary": "Получение всех автовладельцев",
+        "description": "Эндпоинт возвращает полную информацию обо всех автовладельцах. С пагинацией и сортировкой по паспорту.",
+                "parameters": [
+                    {
+            "description": "количество автовладельцев, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество автовладельцев в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+                "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OwnerDTO"
+                  }
+                }
+              }
+            },
+            "description": "События найдены"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          }
+        }
+      }
+    },
+
+    "/owners/search": {
+      "get" : {
+                "tags": [
+                  "OwnerController"
+                ],
+        "summary": "Поиск автовладельцев",
+        "description": "Эндпоинт возвращает полную информацию обо всех автовладельцах подходящих под переданные условия с пагинацией.",
+                "parameters": [
+                 {
+            "description": "ключевое слово для поиска",
+            "in": "query",
+            "name": "text",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+                    {
+            "description": "количество автовладельцев, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество автовладельцев в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+                "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OwnerDTO"
+                  }
+                }
+              }
+            },
+            "description": "События найдены"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          }
+        }
+      }
+    },
+
+    "/owners/{ownerId}": {
+      "get": {
+        "tags": [
+          "OwnerController"
+        ],
+        "summary": "Получение данных автовладельца.",
+                "description": "Получить полную информоцаю об автовладельце.",
+        "parameters": [
+          {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Статистика собрана",
+            "content": {
+              "application/json": {
+                              "schema": {
+                "$ref": "#/components/schemas/OwnerDTO"
+              }
+              }
+            }
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "OwnerController"
+          ],
+          "summary": "Изменение данных автовладельца.",
+          "parameters": [
+          {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+                "requestBody": {
+          "description": "Данные запроса",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OwnerDTO"
+              }
+            }
+          },
+          "required": true
+        },
+                "responses": {
+          "200": {
+                        "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OwnerDTO"
+                }
+              }
+            },
+            "description": "Информация сохранена"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      },
+      "delete": {
+                "tags": [
+          "OwnerController"
+          ],
+          "summary": "Удаление данных автовладельца.",
+                "parameters": 
+                  [
+                  {
+                    "description": "id автовладельца",
+                    "name": "ownerId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   }
+                 ],
+                "responses": {
+          "200": {
+            "description": "Автовладелец удален"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    },
+    "/owners/{ownerId}/{carId}": {
+      "post": {
+                        "tags": [
+          "OwnerController"
+        ],
+        "summary": "Закрепить автомобиль за автовладельцем.",
+                        "parameters": 
+                  [
+                  {
+                    "description": "id автовладельца",
+                    "name": "ownerId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   },
+                   {
+                    "description": "id автомобиля",
+                    "name": "carId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   }
+                 ],
+                "responses": {
+          "201": {
+            "description": "Автовладелец теперь владеет автомобилем"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    },
+    "/owners/deleteCar/{ownerId}/": {
+      "delete": {
+                "tags": [
+          "OwnerController"
+        ],
+        "summary": "Лишить владения автовладельца автомобилем.",
+                "description": "При удалении автомобиля из БД.",
+                "parameters": 
+                  [
+                  {
+                    "description": "id автовладельца",
+                    "name": "ownerId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   },
+                   {
+                    "description": "id автомобиля",
+                    "name": "carId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   }
+                 ],
+                "responses": {
+          "200": {
+            "description": "Автовладелец теперь не владеет автомобилем"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    },
+    "/owners/changeOwner/{ownerId}/": {
+      "put": {
+                "tags": [
+          "OwnerController"
+        ],
+        "summary": "Смена автовладельца.",
+                "parameters": 
+                  [
+                  {
+                    "description": "id автовладельца",
+                    "name": "ownerId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   },
+                   {
+                    "description": "id автомобиля",
+                    "name": "carId",
+                    "required": true,
+                    "schema": {
+                      "type": "integer",
+                      "format": "int64"
+                      }
+                   }
+                 ],
+                "responses": {
+          "200": {
+            "description": "У автомобиля новый владелец"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          },
+          "404": {
+            "description": "Не найдено"
+          }
+        }
+      }
+    }
+  },
+
+
+
+
+
+
+  "components": {
+    "schemas": {
+      "OwnerCreateDTO": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Adam"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия пользователя",
+            "example": "Smith"
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Второе имя пользователя или отчетсво",
+            "example": "John"
+          },
+          "passport": {
+            "type": "string",
+            "description": "Паспортные данные",
+            "example": "5612 568752"
+          },
+          "driversLicense": {
+            "type": "string",
+            "description": "Категория прав",
+            "example": "В"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Дата рождения",
+            "example": "1980-10-05"
+          },
+          "experience": {
+            "type": "integer",
+            "description": "Водительский стаж",
+            "example": "10"
+          }
+        }
+      },
+      "OwnerDTO": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Adam"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия пользователя",
+            "example": "Smith"
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Второе имя пользователя или отчетсво",
+            "example": "John"
+          },
+          "passport": {
+            "type": "string",
+            "description": "Паспортные данные",
+            "example": "5612 568752"
+          },
+          "driversLicense": {
+            "type": "string",
+            "description": "Категория прав",
+            "example": "В"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Дата рождения",
+            "example": "1980-10-05"
+          },
+          "experience": {
+            "type": "integer",
+            "description": "Водительский стаж",
+            "example": "10"
+          },
+          "car": {
+            "type": "integer",
+            "description": "Автомобиль",
+            "example": "10"
+          }
+        }
+      },
+      "AccountDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "balance": {
+            "type": "number",
+            "description": "Состояние счета в запрошенной валюте",
+            "example": "10D"
+          },
+          "ownerId": {
+            "type": "number",
+            "description": "Владелец счета",
+            "example": "10"
+          }
+        }
+      }
+    }
+  }
+}

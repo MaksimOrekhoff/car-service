@@ -33,7 +33,7 @@ public class OwnerController {
 
     @DeleteMapping("/deleteCar/{ownerId}")
     public void deleteOwnerCar(@PathVariable Long ownerId) {
-        log.info("Получен Delete-запрос на удаление автовладельца c id: {}", ownerId);
+        log.info("Получен Delete-запрос на отчуждение автомобиля от автовладельца c id: {}", ownerId);
         ownerService.deleteAuto(ownerId);
     }
 

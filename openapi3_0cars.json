@@ -1,0 +1,892 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Rik Masters API",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "CarController",
+      "description": "API для работы с автомобилями"
+    },
+        {
+      "name": "DetailController",
+      "description": "API для работы с деталями автомобилей"
+    }
+  ],
+  "paths": {
+    "/details":{
+      "put":{
+                "tags": [
+          "DetailController"
+        ],
+        "summary": "Установка детали на автомобиль",
+                "description": "Создание и установка детали, если деталь с таким назначением уже установлена в автомобиль, то будет заменена.",
+                "requestBody": {
+          "description": "Данные запроса",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DetailDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+                        "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailDTO"
+                }
+              }
+            },
+            "description": "Деталь успешно создана"
+          },
+          "200" : {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailDTO"
+                }
+              }
+            },
+            "description": "Деталь успешно заменена"
+          },
+          "400": {
+            "description": "Неверный запрос"
+          }
+        }
+      },
+      "get" : {
+        "tags": [
+          "DetailController"
+          ],
+        "summary": "Получение всех деталей",
+                "description": "Информация обо всех деталях в БД отсортированных по назначению.",
+                "parameters": [
+                                        {
+            "description": "количество деталей, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество деталей в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DetailDTO"
+                  }
+                }
+              }
+            },
+            "description": "События найдены"
+          }
+        }
+      }
+    },
+    "/details/search": {
+      "get" : {
+        "tags": [
+          "DetailController"
+          ],
+        "summary": "Поиск деталей",
+                "description": "Поиск деталей происходит по назначению и выдается с пагинацией.",
+                "parameters": [
+                                        {
+            "description": "количество деталей, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество деталей в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "description": "Необходимая деталь",
+            "in": "query",
+            "name": "text",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2010-06-05"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DetailDTO"
+                  }
+                }
+              }
+            },
+            "description": "Детали получены"
+          }
+        }
+      }
+    },
+    "/details/{detailId}": {
+      "delete":{
+        "tags": [
+          "DetailController"
+          ],
+        "summary": "Удаление детали",
+                "parameters": [
+          {
+            "description": "id детали",
+            "in": "path",
+            "name": "detailId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Деталь упешно удалена."
+          },
+          "404": {
+            "description": "Не найдено."
+          }
+        }
+    },
+      "get":{
+        "tags": [
+          "DetailController"
+          ],
+        "summary": "Получение детали",
+                "parameters": [
+          {
+            "description": "id детали",
+            "in": "path",
+            "name": "detailId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+
+          "200" : {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DetailDTO"
+                }
+              }
+            },
+            "description": "Деталь успешно получена"
+          }
+        }
+      }
+  },
+
+    "/cars": {
+      "post" : {
+                "tags": [
+          "CarController"
+        ],
+        "summary": "Создание нового автомобиля",
+                "description": "Сохранение информации о новом автомобиле в БД.",
+                        "requestBody": {
+          "description": "Данные запроса",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarCreateDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+                        "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarCreateDTO"
+                }
+              }
+            },
+            "description": "Автомобиль создан"
+          },
+          "400": {
+            "description": "Невалидные данные"
+          }
+        }
+      },
+      "get" : {
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Получение всех автомобилей",
+                "description": "Информация обо всех автомобилях в БД отсортированных по VIN.",
+                "parameters": [
+                                        {
+            "description": "количество автовладельцев, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество автовладельцев в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarShortDTO"
+                  }
+                }
+              }
+            },
+            "description": "События найдены"
+          }
+        }
+      }
+    },
+    "/cars/search": {
+        "get" : {
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Поиск автомобилей",
+                "description": "Поиск производится за оперделенный переиод выпуска автомобилей.",
+                "parameters": [
+                                        {
+            "description": "количество автомобилей, которые нужно пропустить для формирования текущего набора",
+            "in": "query",
+            "name": "from",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "description": "количество автомобилей в наборе",
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "description": "Не раньше этого года выпуска",
+            "in": "query",
+            "name": "start",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2010-06-05"
+            }
+          },
+          {
+            "description": "Не позже этого года выпуска",
+            "in": "query",
+            "name": "end",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "2023-06-05"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarShortDTO"
+                  }
+                }
+              }
+            },
+            "description": "События найдены"
+          }
+        }
+      }
+    },
+    "/cars/{carId}" : {
+      "get" : {
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Получение автомобиля",
+                "description": "Полная информация об автомобиля по id.",
+                "parameters": [
+                    {
+            "description": "id автомообиля",
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Автомобиль найден",
+            "content": {
+              "application/json": {
+                              "schema": {
+                "$ref": "#/components/schemas/CarDTO"
+              }
+              }
+            }
+          },
+          "404": {
+            "description": "Не найдено."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Изменение автомобиля",
+                "description": "Внесение изменений изменений в БД об автомобиле.",
+                "parameters": [
+          {
+            "description": "id автомобиля",
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Данные запроса",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+                        "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarDTO"
+                }
+              }
+            },
+            "description": "Информация сохранена"
+          },
+          "404": {
+            "description": "Не найдено."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Удаление автомобиля",
+                "description": "Удаление автомобиля происходит вместе с деталями.",
+                "parameters": [
+          {
+            "description": "id автомобиля",
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Автомобиль упешно удален."
+          },
+          "404": {
+            "description": "Не найдено."
+          }
+        }
+      }
+    },
+    "/cars/removeCarOwner/{carId}":{
+      "delete":{
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Удаление владельца автомобиля",
+          "parameters": [
+          {
+            "description": "id автомобиля",
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Владелец автомобиля упешно удален."
+          },
+          "404": {
+            "description": "Не найдено."
+          }
+        }
+      }
+    },
+    "/cars/changeCarOwner/{ownerId}/{carId}" : {
+      "put":{
+        "tags": [
+          "CarController"
+          ],
+        "summary": "Смена владельца автоиобиля",
+          "parameters": [
+          {
+            "description": "id нового владельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "id автомобиля",
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Владелец автомобиля упешно изменен."
+          },
+          "404": {
+            "description": "Такой автомобиль не найден."
+          }
+        }
+      }
+    },
+    "/cars/{ownerId}/{carId}": {
+      "post" :{
+                  "tags": [
+          "CarController"
+        ],
+          "summary": "Установить владельца",
+          "description": "Устанавливает владельца автомобился по переданным id.",
+          "parameters": [
+                    {
+            "description": "id автовладельца",
+            "in": "path",
+            "name": "ownerId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "description": "id автомобиля",
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "У автомобиля появился владелец."
+          },
+          "404": {
+            "description": "Такой автомобиль не найден."
+          }
+        }
+      }
+    }
+  },
+
+
+
+
+
+
+  "components": {
+    "schemas": {
+      "OwnerCreateDTO": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Adam"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия пользователя",
+            "example": "Smith"
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Второе имя пользователя или отчетсво",
+            "example": "John"
+          },
+          "passport": {
+            "type": "string",
+            "description": "Паспортные данные",
+            "example": "5612 568752"
+          },
+          "driversLicense": {
+            "type": "string",
+            "description": "Категория прав",
+            "example": "В"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Дата рождения",
+            "example": "1980-10-05"
+          },
+          "experience": {
+            "type": "integer",
+            "description": "Водительский стаж",
+            "example": "10"
+          }
+        }
+      },
+      "OwnerDTO": {
+        "type": "object",
+        "properties": {
+          "accountId": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "Adam"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Фамилия пользователя",
+            "example": "Smith"
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Второе имя пользователя или отчетсво",
+            "example": "John"
+          },
+          "passport": {
+            "type": "string",
+            "description": "Паспортные данные",
+            "example": "5612 568752"
+          },
+          "driversLicense": {
+            "type": "string",
+            "description": "Категория прав",
+            "example": "В"
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "description": "Дата рождения",
+            "example": "1980-10-05"
+          },
+          "experience": {
+            "type": "integer",
+            "description": "Водительский стаж",
+            "example": "10"
+          },
+          "car": {
+            "type": "integer",
+            "description": "Автомобиль",
+            "example": "10"
+          }
+        }
+      },
+      "AccountDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "balance": {
+            "type": "number",
+            "description": "Состояние счета в запрошенной валюте",
+            "example": "10D"
+          },
+          "ownerId": {
+            "type": "number",
+            "description": "Владелец счета",
+            "example": "10"
+          }
+        }
+      },
+      "CarDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "vin": {
+            "type": "string",
+            "description": "vin автомобиля",
+            "example": "FUGYLIHr3o4noni"
+          },
+          "governmentNumber": {
+            "type": "string",
+            "description": "Гос номер авто",
+            "example": "А563РЛ"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "Производитель",
+            "example": "ОпельКонцерн"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Бренд",
+            "example": "Опель"
+          },
+          "yearOfIssue": {
+            "type": "string",
+            "description": "Год выпуска",
+            "example": "2020"
+          },
+          
+            "details": {
+            "type": "array",
+            "description": "Список всех установленных деталей",
+            "items": {
+             "$ref": "#/components/schemas/DetailDTO"
+            }
+          },
+          
+          "owner": {
+            "type": "integer",
+            "description": "Владелец",
+            "example": "10"
+          }
+        }
+      },
+      "CarCreateDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "vin": {
+            "type": "string",
+            "description": "vin автомобиля",
+            "example": "FUGYLIHr3o4noni"
+          },
+          "governmentNumber": {
+            "type": "string",
+            "description": "Гос номер авто",
+            "example": "А563РЛ"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "Производитель",
+            "example": "ОпельКонцерн"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Бренд",
+            "example": "Опель"
+          },
+          "yearOfIssue": {
+            "type": "string",
+            "description": "Год выпуска",
+            "example": "2020"
+          },
+          
+            "details": {
+            "type": "array",
+            "description": "Список всех установленных деталей",
+            "items": {
+             "$ref": "#/components/schemas/DetailDTO"
+            }
+          }
+        }
+      },
+      "DetailDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "serialNumber": {
+            "type": "number",
+            "description": "Серийный номер",
+            "example": "10DUYDOBSA12435"
+          },
+          "denomination": {
+            "type": "string",
+            "description": "Назначение детали",
+            "example": "лобовое стекло"
+          },
+          "car": {
+            "type": "number",
+            "description": "В какой автомобиль установлена",
+            "example": "5"
+          }
+        }
+      },
+      "CarShortDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "Идентификатор записи",
+            "format": "int64",
+            "readOnly": true,
+            "example": 1
+          },
+          "vin": {
+            "type": "string",
+            "description": "vin автомобиля",
+            "example": "FUGYLIHr3o4noni"
+          },
+          "governmentNumber": {
+            "type": "string",
+            "description": "Гос номер авто",
+            "example": "А563РЛ"
+          },
+          "manufacturer": {
+            "type": "string",
+            "description": "Производитель",
+            "example": "ОпельКонцерн"
+          },
+          "brand": {
+            "type": "string",
+            "description": "Бренд",
+            "example": "Опель"
+          },
+          "yearOfIssue": {
+            "type": "string",
+            "description": "Год выпуска",
+            "example": "2020"
+          },
+          "owner": {
+            "type": "integer",
+            "description": "Владелец",
+            "example": "10"
+          }
+        }
+      }
+    }
+  }
+}
