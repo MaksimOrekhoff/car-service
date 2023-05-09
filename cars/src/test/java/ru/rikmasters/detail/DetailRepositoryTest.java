@@ -19,9 +19,9 @@ class DetailRepositoryTest {
 
     @Test
     void search() {
-        Detail detail = new Detail(1L, "new", "kardan", null);
+        Detail detail1 = new Detail(1L, "new", "kardan", null);
 
-        detailRepository.save(detail);
+        Detail detail = detailRepository.save(detail1);
         List<Detail> result = detailRepository.searchOwners("kar",
                 new MyPageRequest(0, 10, Sort.unsorted()));
 

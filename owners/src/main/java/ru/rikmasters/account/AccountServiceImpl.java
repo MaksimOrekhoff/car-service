@@ -46,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
         Account account = accountRepository.save(
                 new Account(null, 0D, 0D, 0D, ownerId));
         log.debug("Открыт счет {} автовладелеца {} ", account, ownerId);
-        return new AccountDto(account.getId(), null, ownerId);
+        return new AccountDto(account.getId(), 0D, ownerId);
     }
 
     @Override

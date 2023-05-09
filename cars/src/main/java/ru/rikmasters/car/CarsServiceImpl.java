@@ -15,6 +15,7 @@ import ru.rikmasters.owner.OwnerClient;
 import ru.rikmasters.utils.MyPageRequest;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,9 +34,9 @@ public class CarsServiceImpl implements CarsService {
             Car car = carRepository.save(carMapper.toCreateCar(carDTO, detailMapper.toDetail(carDTO.getDetails(), null)));
             return carMapper.toCarCreateDTO(car, detailMapper.toDetailDTO(car.getDetails()));
         }
-        Car car = carRepository.save(carMapper.toCreateCar(carDTO, null));
+        Car car = carRepository.save(carMapper.toCreateCar(carDTO, new ArrayList<>()));
         log.debug("Добавлен авто {} ", car);
-        return carMapper.toCarCreateDTO(car, null);
+        return carMapper.toCarCreateDTO(car, new ArrayList<>());
     }
 
     @Override
@@ -46,7 +47,7 @@ public class CarsServiceImpl implements CarsService {
         if (!car.getDetails().isEmpty()) {
             return carMapper.toCarDTO(car, detailMapper.toDetailDTO(car.getDetails()));
         }
-        return carMapper.toCarDTO(car, null);
+        return carMapper.toCarDTO(car, new ArrayList<>());
     }
 
     @Override
@@ -72,7 +73,7 @@ public class CarsServiceImpl implements CarsService {
         Car newCar = carRepository.save(car);
         log.debug("Изменен автомобиль: {}", newCar);
         if (car.getDetails() == null) {
-            return carMapper.toCarDTO(newCar, null);
+            return carMapper.toCarDTO(newCar, new ArrayList<>());
         }
         return carMapper.toCarDTO(newCar, detailMapper.toDetailDTO(car.getDetails()));
     }
